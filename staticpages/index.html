@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Homepage selection Menu -->
+    <div id="selection_page">
+        <h2>Selection page</h2>
+        <h3>Student</h3>
+        <button id="select-student-button" onclick="displayStudentInfoPage()"> enter student page</button>
+        <h3>Teacher</h3>
+        <button id="select-teacher-button" onclick="displayTeacherInfoPage()"> enter teacher page</button>
+    </div>
+
+    <!-- Display student page -->
+    <div id="displayStudent" style="display:none">
+        <h2>Student information page</h2>
+        <button onclick="returnHomePage()">Return to selection page</button>
+        <button onclick="showCreateStudent()">Create an entry</button>
+        <table id="student_Table">
+            <tr>
+                <th>student_id</th>
+                <th>surname</th>
+                <th>first_name</th>
+                <th>registered_modules</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Display Teacher page -->
+    <div id="displayTeacher" style="display:none">
+        <h2>Teacher information page</h2>
+        <button onclick="returnHomePage()">Return to selection page</button>
+        <button onclick="showCreateTeacher()">Create an entry</button>
+        <table id="teacher_Table">
+            <tr>
+                <th>teacher_id</th>
+                <th>surname</th>
+                <th>first_name</th>
+                <th>instructing_modules</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Create/edit page Student-->
+    <div id="create-update-s" style="display:none">
+        <h2>Create-update page Student</h2>
+        <table id="createUpdateFormStudent">
+            <tr>
+                <td>student_id</td>
+                <td><input type="text" name="student_id" id="student_inputID" disabled
+                        placeholder="Field Auto. Generated"></td>
+                <!-- disabled placeholder="Field Auto. Generated" -->
+            </tr>
+            <tr>
+                <td>surname</td>
+                <td><input type="text" name="surname"></td>
+            </tr>
+            <tr>
+                <td>first_name</td>
+                <td><input type="text" name="first_name"></td>
+            </tr>
+            <tr>
+                <td>registered_modules</td>
+                <td><input type="text" name="registered_modules"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="create-button-s" onclick="doCreateStudent()">Create</button>
+                    <button id="update-button-s" onclick="doUpdateStudent()">Update</button>
+                    <button id="cancel-button-s" onclick="returnStudentInfoPage()">Cancel</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Create/edit page Teacher-->
+    <div id="create-update-t" style="display:none">
+        <h2>Create-update page Teacher</h2>
+        <table id="createUpdateFormTeacher">
+            <tr>
+                <td>teacher_id</td>
+                <td><input type="text" name="teacher_id" id="teacher_inputID" disabled
+                        placeholder="Field Auto. Generated"></td>
+                <!-- disabled placeholder="Field Auto. Generated" -->
+            </tr>
+            <tr>
+                <td>surname</td>
+                <td><input type="text" name="surname"></td>
+            </tr>
+            <tr>
+                <td>first_name</td>
+                <td><input type="text" name="first_name"></td>
+            </tr>
+            <tr>
+                <td>instructing_modules</td>
+                <td><input type="text" name="instructing_modules"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button id="create-button-t" onclick="doCreateTeacher()">Create</button>
+                    <button id="update-button-t" onclick="doUpdateTeacher()">Update</button>
+                    <button id="cancel-button-t" onclick="returnTeacherInfoPage()">Cancel</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+
+    <script>
+        function returnHomePage() {
+            console.log("in function returnHomePage")
+            document.getElementById('selection_page').style.display = "block"
+            document.getElementById('displayStudent').style.display = "none"
+            document.getElementById('displayTeacher').style.display = "none"
+            document.getElementById('create-update-t').style.display = "none"
+            document.getElementById('create-update-s').style.display = "none"
+            location.reload();
+        }
+
+        function returnStudentInfoPage() {
+            console.log("in function returnStudentInfoPage")
+            document.getElementById('selection_page').style.display = "none"
+            document.getElementById('displayStudent').style.display = "block"
+            document.getElementById('create-update-s').style.display = "none"
+
+            // populateTable()
+        }
+
+        function returnTeacherInfoPage() {
+            console.log("in function returnTeacherInfoPage")
+            document.getElementById('selection_page').style.display = "none"
+            document.getElementById('displayTeacher').style.display = "block"
+            document.getElementById('create-update-t').style.display = "none"
+
+            // populateTable()
+        }
+
+        function displayStudentInfoPage() {
+
+            console.log("in function displayStudentInfoPage")
+            document.getElementById('selection_page').style.display = "none"
+            document.getElementById('displayStudent').style.display = "block"
+            document.getElementById('create-update-s').style.display = "none"
+
+            populateTableStudent()
+
+        }
+
+        function displayTeacherInfoPage() {
+
+            console.log("in function displayTeacherInfoPage")
+            document.getElementById('selection_page').style.display = "none"
+            document.getElementById('displayTeacher').style.display = "block"
+            document.getElementById('create-update-t').style.display = "none"
+
+            populateTableTeacher()
+
+        }
+
+        function showCreateStudent() {
+            console.log("in function showCreateStudent, this function selects what to display, the create-update page is displayed")
+            // var form = document.getElementById('createUpdateForm')
+            // form.querySelector('input[name="student_id"]').disabled = true
+
+
+            document.getElementById('displayStudent').style.display = "none"
+            document.getElementById('update-button-s').style.display = "none"
+            document.getElementById('create-button-s').style.display = "block"
+            document.getElementById('create-update-s').style.display = "block"
+            document.getElementById('cancel-button-s').style.display = "block"
+
+
+        }
+
+        function showCreateTeacher() {
+            console.log("in function showCreateTeacher, this function selects what to display, the create-update page is displayed")
+            // var form = document.getElementById('createUpdateForm')
+            // form.querySelector('input[name="student_id"]').disabled = true
+
+
+            document.getElementById('displayTeacher').style.display = "none"
+            document.getElementById('update-button-t').style.display = "none"
+            document.getElementById('create-button-t').style.display = "block"
+            document.getElementById('create-update-t').style.display = "block"
+            document.getElementById('cancel-button-t').style.display = "block"
+
+
+        }
+
+        function showUpdateStudent(thisElem) {
+            console.log("in function showUpdateStudent")
+
+            var rowElement = thisElem.parentNode.parentNode;
+            // student_id = rowElement.getAttribute("student_id");
+            // console.log(student_id)
+
+            var student = readStudentFromRow(rowElement)
+            // The form is filled with the student info
+
+
+            // document.getElementById("student_id_Input").value = student_id
+            // document.getElementById("student_id_Input").disabled = false
+            populateFormStudent(student)
+
+            document.getElementById('displayStudent').style.display = "none"
+            document.getElementById('update-button-s').style.display = "block"
+            document.getElementById('create-button-s').style.display = "none"
+            document.getElementById('create-update-s').style.display = "block"
+
+        }
+
+        function showUpdateTeacher(thisElem) {
+            console.log("in function showUpdateTeacher")
+
+            var rowElement = thisElem.parentNode.parentNode;
+            // teacher_id = rowElement.getAttribute("teacher_id");
+            // console.log(teacher_id)
+
+            var teacher = readTeacherFromRow(rowElement)
+            // The form is filled with the teacher info
+
+
+            // document.getElementById("teacher_id_Input").value = teacher_id
+            // document.getElementById("teacher_id_Input").disabled = false
+            populateFormTeacher(teacher)
+
+            document.getElementById('displayTeacher').style.display = "none"
+            document.getElementById('update-button-t').style.display = "block"
+            document.getElementById('create-button-t').style.display = "none"
+            document.getElementById('create-update-t').style.display = "block"
+
+        }
+
+        function readStudentFromRow(rowElement) {
+            console.log("in function readStudentFromRow")
+
+            student = {}
+            student.student_id = rowElement.getAttribute("id");
+            student.surname = rowElement.cells[1].firstChild.textContent
+            student.first_name = rowElement.cells[2].firstChild.textContent
+            student.registered_modules = rowElement.cells[3].firstChild.textContent
+
+            return student
+        }
+
+        function readTeacherFromRow(rowElement) {
+            console.log("in function readTeacherFromRow")
+
+            teacher = {}
+            teacher.teacher_id = rowElement.getAttribute("id");
+            teacher.surname = rowElement.cells[1].firstChild.textContent
+            teacher.first_name = rowElement.cells[2].firstChild.textContent
+            teacher.instructing_modules = rowElement.cells[3].firstChild.textContent
+
+            return teacher
+        }
+
+        function populateFormStudent(student) {
+            console.log("in function populateFormStudent")
+
+            var form = document.getElementById('createUpdateFormStudent')
+            // document.getElementById("student_id_Input").value = student_id
+            // document.getElementById("student_id_Input").disabled = true
+            form.querySelector('input[name="student_id"]').value = student.student_id
+            form.querySelector('input[name="student_id"]').disabled = true
+
+            form.querySelector('input[name="surname"]').value = student.surname
+            form.querySelector('input[name="first_name"]').value = student.first_name
+            form.querySelector('input[name="registered_modules"]').value = student.registered_modules
+            // console.log(student)
+
+            // document.getElementById("student_idInput").value = student_id
+            // document.getElementById("student_idInput").disabled = true
+
+
+        }
+
+        function populateFormTeacher(teacher) {
+            console.log("in function populateFormTeacher")
+
+            var form = document.getElementById('createUpdateFormTeacher')
+            // document.getElementById("teacher_id_Input").value = teacher_id
+            // document.getElementById("teacher_id_Input").disabled = true
+            form.querySelector('input[name="teacher_id"]').value = teacher.teacher_id
+            form.querySelector('input[name="teacher_id"]').disabled = true
+
+            form.querySelector('input[name="surname"]').value = teacher.surname
+            form.querySelector('input[name="first_name"]').value = teacher.first_name
+            form.querySelector('input[name="instructing_modules"]').value = teacher.instructing_modules
+            // console.log(teacher)
+
+            // document.getElementById("teacher_idInput").value = teacher_id
+            // document.getElementById("teacher_idInput").disabled = true
+
+
+        }
+
+
+        function clearFormStudent() {
+            console.log("in function clearForm")
+
+            var form = document.getElementById('createUpdateFormStudent')
+
+            // document.getElementById("student_id_Input").value = student_id
+            // document.getElementById("student_id_Input").disabled = true
+
+            form.querySelector('input[name="student_id"]').value = ''
+            form.querySelector('input[name="student_id"]').disabled = false
+
+            form.querySelector('input[name="surname"]').value = ''
+            form.querySelector('input[name="first_name"]').value = ''
+            form.querySelector('input[name="registered_modules"]').value = ''
+            // console.log(student)
+
+            // document.getElementById("student_idInput").value = student_id
+            // document.getElementById("student_idInput").disabled = true
+
+
+        }
+
+        function clearFormTeacher() {
+            console.log("in function clearForm")
+
+            var form = document.getElementById('createUpdateFormTeacher')
+
+            // document.getElementById("teacher_id_Input").value = teacher_id
+            // document.getElementById("teacher_id_Input").disabled = true
+
+            form.querySelector('input[name="teacher_id"]').value = ''
+            form.querySelector('input[name="teacher_id"]').disabled = false
+
+            form.querySelector('input[name="surname"]').value = ''
+            form.querySelector('input[name="first_name"]').value = ''
+            form.querySelector('input[name="instructing_modules"]').value = ''
+            // console.log(teacher)
+
+            // document.getElementById("teacher_idInput").value = teacher_id
+            // document.getElementById("teacher_idInput").disabled = true
+
+
+        }
+
+        function doCreateStudent() {
+            
+
+            console.log("in function doCreate")
+
+            student = getStudentFromForm()
+            console.log("back in function doCreate")
+
+            console.log(student)
+            $.ajax({
+                url: "/students",
+                data: JSON.stringify(student),
+                method: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result)
+                    // console.log("adding student to table")
+                    student.student_id = result
+                    addStudentToTable(student)
+                    returnStudentInfoPage()
+                    clearFormStudent()
+                    // location.reload();
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error)
+                }
+            })
+        }
+
+        function doCreateTeacher() {
+            
+
+            console.log("in function doCreate")
+
+            teacher = getTeacherFromForm()
+            console.log("back in function doCreate")
+
+            console.log(teacher)
+            $.ajax({
+                url: "/teachers",
+                data: JSON.stringify(teacher),
+                method: "POST",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result)
+                    // console.log("adding teacher to table")
+                    teacher.teacher_id = result
+                    addTeacherToTable(teacher)
+                    returnTeacherInfoPage()
+                    clearFormTeacher()
+                    // location.reload();
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error)
+                }
+            })
+        }
+
+
+
+        function doUpdateStudent() {
+            console.log("in function doUpdate")
+
+            student = getStudentFromForm()
+            updateServerStudent(student)
+            // clearForm()
+            // showDisplay()
+
+        }
+
+        function doUpdateTeacher() {
+            console.log("in function doUpdate")
+
+            teacher = getTeacherFromForm()
+            updateServerTeacher(teacher)
+            // clearForm()
+            // showDisplay()
+
+        }
+
+        function updateServerStudent(student) {
+            console.log("in function updateServer")
+            // student = getStudentFromForm()
+            console.log(student)
+            $.ajax({
+                url: "/students/" + student.student_id,
+                data: JSON.stringify(student),
+                method: "PUT",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result)
+                    // student.student_id = result
+                    updateTableRowStudent(student)
+                    // addStudentToTable(student)
+                    // populateTable()
+                    returnStudentInfoPage()
+                    clearFormStudent()
+
+                    // addStudentToTable(student)
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error)
+                }
+            })
+        }
+
+        function updateServerTeacher(teacher) {
+            console.log("in function updateServer")
+            // teacher = getStudentFromForm()
+            console.log(teacher)
+            $.ajax({
+                url: "/teachers/" + teacher.teacher_id,
+                data: JSON.stringify(teacher),
+                method: "PUT",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result)
+                    // teacher.teacher_id = result
+                    updateTableRowTeacher(teacher)
+                    // addTeacherToTable(teacher)
+                    // populateTable()
+                    returnTeacherInfoPage()
+                    clearFormTeacher()
+
+                    // addTeacherToTable(teacher)
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error)
+                }
+            })
+        }
+
+        function doDeleteStudent(thisElem) {
+            console.log("in function  doDelete")
+
+            var tableElement = document.getElementById('student_Table');
+            var rowElement = thisElem.parentNode.parentNode;
+            var index = rowElement.rowIndex;
+            student_id = rowElement.getAttribute("id");
+            $.ajax({
+                url: "/students/" + student_id,
+                method: "DELETE",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    tableElement.deleteRow(index);
+                    console.log("ajax delete call made");
+                },
+                error: function (xhr, status, error) {
+                    console.log(error)
+                }
+            })
+
+
+        }
+
+        function doDeleteTeacher(thisElem) {
+            console.log("in function  doDelete")
+
+            var tableElement = document.getElementById('teacher_Table');
+            var rowElement = thisElem.parentNode.parentNode;
+            var index = rowElement.rowIndex;
+            teacher_id = rowElement.getAttribute("id");
+            $.ajax({
+                url: "/teachers/" + teacher_id,
+                method: "DELETE",
+                dataType: "JSON",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    tableElement.deleteRow(index);
+                    console.log("ajax delete call made");
+                },
+                error: function (xhr, status, error) {
+                    console.log(error)
+                }
+            })
+
+
+        }
+
+        function updateTableRowStudent(student) {
+            console.log("in function updateTableRow")
+
+            var rowElement = document.getElementById(student.student_id)
+            console.log(rowElement)
+            rowElement.cells[1].firstChild.textContent = student.surname
+            rowElement.cells[2].firstChild.textContent = student.first_name
+            rowElement.cells[3].firstChild.textContent = student.registered_modules
+
+            console.log("updating table")
+
+        }
+
+        function updateTableRowTeacher(teacher) {
+            console.log("in function updateTableRow")
+
+            var rowElement = document.getElementById(teacher.teacher_id)
+            console.log(rowElement)
+            rowElement.cells[1].firstChild.textContent = teacher.surname
+            rowElement.cells[2].firstChild.textContent = teacher.first_name
+            rowElement.cells[3].firstChild.textContent = teacher.instructing_modules
+
+            console.log("updating table")
+
+        }
+
+        function getStudentFromForm() {
+            console.log("in function getStudentFromForm")
+
+            var form = document.getElementById('createUpdateFormStudent')
+
+            console.log("creating a key value pair and filling with student details")
+
+            var student = {}
+            student.student_id = form.querySelector('input[name="student_id"]').value
+            student.surname = form.querySelector('input[name="surname"]').value
+            student.first_name = form.querySelector('input[name="first_name"]').value
+            student.registered_modules = form.querySelector('input[name="registered_modules"]').value
+
+            console.log(student)
+            return student
+        }
+
+        function getTeacherFromForm() {
+            console.log("in function getTeacherFromForm")
+
+            var form = document.getElementById('createUpdateFormTeacher')
+
+            console.log("creating a key value pair and filling with teacher details")
+
+            var teacher = {}
+            teacher.teacher_id = form.querySelector('input[name="teacher_id"]').value
+            teacher.surname = form.querySelector('input[name="surname"]').value
+            teacher.first_name = form.querySelector('input[name="first_name"]').value
+            teacher.instructing_modules = form.querySelector('input[name="instructing_modules"]').value
+
+            console.log(teacher)
+            return teacher
+        }
+
+
+        function populateTableStudent() {
+            console.log("in function populateTableStudent, making ajax get call")
+
+            //ajax getAll
+            // Instead of inserting sample data ajax calls will be used
+            $.ajax({
+                url: '/students',
+                method: 'GET',
+                dataType: 'JSON',
+                success: function (results) {
+                    for (student of results) {
+                        addStudentToTable(student)
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error + " code:" + status)
+                }
+
+            })
+            // creation of a sample student for testing
+            // student = {
+            //     student_id:21000,
+            //     surname:"Test",
+            //     first_name:"Test",
+            //     registered_modules:"Test"
+            // }
+        }
+
+        function populateTableTeacher() {
+            console.log("in function populateTableTeacher, making ajax get call")
+
+            //ajax getAll
+            // Instead of inserting sample data ajax calls will be used
+            $.ajax({
+                url: '/teachers',
+                method: 'GET',
+                dataType: 'JSON',
+                success: function (results) {
+                    for (teacher of results) {
+                        addTeacherToTable(teacher)
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("error" + error + " code:" + status)
+                }
+
+            })
+            // creation of a sample teacher for testing
+            // teacher = {
+            //     teacher_id:21000,
+            //     surname:"Test",
+            //     first_name:"Test",
+            //     registered_modules:"Test"
+            // }
+        }
+
+        function addStudentToTable(student) {
+            console.log(" in function addStudentToTable, working so far")
+
+            tableElem = document.getElementById("student_Table")
+            rowElem = tableElem.insertRow(-1)
+            // The line below helps the delete code function
+            rowElem.setAttribute("id", student.student_id)
+
+            cell1 = rowElem.insertCell(0)
+            cell1.innerHTML = student.student_id
+
+            cell2 = rowElem.insertCell(1)
+            cell2.innerHTML = student.surname
+
+            cell3 = rowElem.insertCell(2)
+            cell3.innerHTML = student.first_name
+
+            cell4 = rowElem.insertCell(3)
+            cell4.innerHTML = student.registered_modules
+
+            cell5 = rowElem.insertCell(4)
+            cell5.innerHTML = '<button onclick="showUpdateStudent(this)">Update</button>'
+
+            cell6 = rowElem.insertCell(5)
+            cell6.innerHTML = '<button onclick="doDeleteStudent(this)">Delete</button>'
+
+            console.log("addition complete")
+
+        }
+
+        function addTeacherToTable(teacher) {
+            console.log(" in function addTeacherToTable, working so far")
+
+            tableElem = document.getElementById("teacher_Table")
+            rowElem = tableElem.insertRow(-1)
+            // The line below helps the delete code function
+            rowElem.setAttribute("id", teacher.teacher_id)
+
+            cell1 = rowElem.insertCell(0)
+            cell1.innerHTML = teacher.teacher_id
+
+            cell2 = rowElem.insertCell(1)
+            cell2.innerHTML = teacher.surname
+
+            cell3 = rowElem.insertCell(2)
+            cell3.innerHTML = teacher.first_name
+
+            cell4 = rowElem.insertCell(3)
+            cell4.innerHTML = teacher.instructing_modules
+
+            cell5 = rowElem.insertCell(4)
+            cell5.innerHTML = '<button onclick="showUpdateTeacher(this)">Update</button>'
+
+            cell6 = rowElem.insertCell(5)
+            cell6.innerHTML = '<button onclick="doDeleteTeacher(this)">Delete</button>'
+
+            console.log("addition complete")
+
+        }
+
+        // populateTable()
+    </script>
+</body>
+
+</html>
+
+
+<!-- Static directory setup on flask -->
+<!-- html makes http requests using ajax up to the server -->
