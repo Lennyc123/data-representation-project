@@ -6,7 +6,6 @@
 from logging import debug
 from tkinter import EXCEPTION
 from flask import Flask, session, redirect, url_for, render_template, escape, jsonify, request, abort, send_from_directory, g
-from requests import Session
 
 # Importing the data access objects for the tables within the database
 from studentDAO import studentDAO

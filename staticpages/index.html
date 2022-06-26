@@ -323,7 +323,7 @@
             // ajax get call to read in the information from the database table student_info
             function populateTableStudent() {
                 $.ajax({
-                    url: '/students',
+                    url: host+'/students',
                     method: 'GET',
                     dataType: 'JSON',
                     success: function (results) {
@@ -341,7 +341,7 @@
             // ajax get call to read in the information from the database table teacher_info
             function populateTableTeacher() {
                 $.ajax({
-                    url: '/teachers',
+                    url: host+'/teachers',
                     method: 'GET',
                     dataType: 'JSON',
                     success: function (results) {
@@ -360,7 +360,7 @@
             function doCreateStudent() {
                 student = getStudentFromForm()
                 $.ajax({
-                    url: "/students",
+                    url: host+"/students",
                     data: JSON.stringify(student),
                     method: "POST",
                     dataType: "JSON",
@@ -381,7 +381,7 @@
             function doCreateTeacher() {
                 teacher = getTeacherFromForm()
                 $.ajax({
-                    url: "/teachers",
+                    url: host+"/teachers",
                     data: JSON.stringify(teacher),
                     method: "POST",
                     dataType: "JSON",
@@ -413,7 +413,7 @@
             // Ajax Update call
             function updateServerStudent(student) {
                 $.ajax({
-                    url: "/students/" + student.student_id,
+                    url: host+"/students/" + student.student_id,
                     data: JSON.stringify(student),
                     method: "PUT",
                     dataType: "JSON",
@@ -432,7 +432,7 @@
             // Ajax Update call
             function updateServerTeacher(teacher) {
                 $.ajax({
-                    url: "/teachers/" + teacher.teacher_id,
+                    url: host+"/teachers/" + teacher.teacher_id,
                     data: JSON.stringify(teacher),
                     method: "PUT",
                     dataType: "JSON",
@@ -454,7 +454,7 @@
                 var index = rowElement.rowIndex;
                 student_id = rowElement.getAttribute("id");
                 $.ajax({
-                    url: "/students/" + student_id,
+                    url: host+"/students/" + student_id,
                     method: "DELETE",
                     dataType: "JSON",
                     contentType: "application/json; charset=utf-8",
@@ -476,7 +476,7 @@
                 var index = rowElement.rowIndex;
                 teacher_id = rowElement.getAttribute("id");
                 $.ajax({
-                    url: "/teachers/" + teacher_id,
+                    url: host+"/teachers/" + teacher_id,
                     method: "DELETE",
                     dataType: "JSON",
                     contentType: "application/json; charset=utf-8",
