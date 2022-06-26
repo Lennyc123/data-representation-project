@@ -1,10 +1,9 @@
-# DAO connects to the database to get data and return the data back to the server
-# DAO takes the info from the database as a tuple
-# Convert the tuple into JSON and send to server
+# Data Access Object for the student_info table within the database (datarep)
+# Python functions are created to communciate with the sql database i.e., crud commands
 
 import mysql.connector
 
-
+# Establish a connection
 class studentDAO:
     db = ""
 
@@ -37,7 +36,6 @@ class studentDAO:
         cursor.execute(sql)
         results = cursor.fetchall()
         returnArray = []
-        # print(results)
         for result in results:
             resultAsDict = self.convertToDict(result)
             returnArray.append(resultAsDict)

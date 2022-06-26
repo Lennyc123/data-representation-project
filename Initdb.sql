@@ -1,3 +1,4 @@
+-- Creating the Database tables
 use datarep;
 
 create table teacher_info(

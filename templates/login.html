@@ -1,0 +1,57 @@
+<!-- HTML for the login page -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <!-- Importing bulma to style the page -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <!-- Importing font aweseome icons -->
+    <script src="https://kit.fontawesome.com/365c57e34a.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <section class="hero is-light is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-half">
+                        <h1 class="title is-2 has-text-centered">Registration Management System</h1>
+                        <form method="POST">
+                            <div class="field">
+                                <label class="label">Username</label>
+                                <div class="control has-icons-left has-icons-right">
+                                    <input class="input is-primary" type="text" name="username" placeholder="Username">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label class="label">Password</label>
+                                <p class="control has-icons-left">
+                                    <input class="input is-primary" type="password" name="password"
+                                        placeholder="Password">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="field">
+                                <p class="control">
+                                    <button type="submit" class="button is-primary is-outlined is-rounded">
+                                        Login
+                                    </button>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

@@ -1,6 +1,9 @@
+# Data Access Object for the teacher_info table within the database (datarep)
+# Python functions are created to communciate with the sql database i.e., crud commands
+
 import mysql.connector
 
-
+# Establish a connection
 class teacherDAO:
     db = ""
 
@@ -33,7 +36,6 @@ class teacherDAO:
         cursor.execute(sql)
         results = cursor.fetchall()
         returnArray = []
-        # print(results)
         for result in results:
             resultAsDict = self.convertToDict(result)
             returnArray.append(resultAsDict)

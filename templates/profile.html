@@ -1,0 +1,39 @@
+<!-- HTML for the profile page i.e., authentication -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile Page</title>
+    <!-- Importing bulma to style the page -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <!-- Importing font aweseome icons -->
+    <script src="https://kit.fontawesome.com/365c57e34a.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <section class="hero is-light is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-half has-text-centered">
+                        <h1 class="title">
+                            {{g.user.username}}'s Profile
+                        </h1>
+                        <h2 class="subtitle">
+                            You are user number #{{g.user.id}}
+                        </h2>
+                        <a href="http://127.0.0.1:5000/home">
+                            <button type="submit" class="button is-primary is-outlined is-rounded"
+                                onclick="index.html">Enter
+                                Registration Page</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

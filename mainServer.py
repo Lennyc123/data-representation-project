@@ -1,37 +1,111 @@
 # Server File
-# Maps the http requests to individual functions
-# return back responses 
-# Map urls to functions - keep simple
+# http requests are mapped to individual functions (python)
+# Routing is established here i.e., urls
+
 
 from logging import debug
-from flask import Flask, jsonify, request, abort, send_from_directory
+from tkinter import EXCEPTION
+from flask import Flask, session, redirect, url_for, render_template, escape, jsonify, request, abort, send_from_directory, g
+from requests import Session
 
+# Importing the data access objects for the tables within the database
 from studentDAO import studentDAO
 from teacherDAO import teacherDAO
 
-app = Flask(__name__,
-            static_url_path='',
-            static_folder='staticpages')
+# defining the parameters
+class User:
+    def __init__(self, id, username, password):
+        self.id = id
+        self.username = username
+        self.password = password
 
-@app.route("/")
+    def __repr__(self):
+        return f'<User: {self.username}>'
+
+
+# Loging details are stored here
+users = []
+users.append(User(id=1, username='admin', password='admin'))
+
+
+app = Flask(__name__)
+
+# Flask secret key for sessions
+app.secret_key = "admin[@2[,675;"
+
+# Upon launching the server the user is directed to the login page
+@app.route('/')
+def begin():
+    return redirect(url_for('login'))
+
+
+@app.before_request
+def before_request():
+    g.user = None
+
+    if 'user_id' in session:
+        user = [x for x in users if x.id == session['user_id']][0]
+        g.user = user
+
+# Assess whether the user provided login information matches the stored login information
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session.pop('user_id', None)
+
+        username = request.form['username']
+        password = request.form['password']
+        # If the username and password match the stored information continue to the profile page i.e., successfull authentication
+        try:
+            user = [x for x in users if x.username == username][0]
+            if user and user.password == password:
+                session['user_id'] = user.id
+                return redirect(url_for('profile'))
+        # If login attempt not successful return to the login screen
+        except Exception:
+            return redirect(url_for('login'))
+
+    return render_template('login.html')
+
+# Successful login screen
+@app.route('/profile')
+def profile():
+    if not g.user:
+        return redirect(url_for('login'))
+
+    return render_template('profile.html')
+
+# database selection screen, user can make crud commands to the database tables here
+@app.route("/home")
 def homepage():
+    if not g.user:
+        return redirect(url_for('login'))
+
     return send_from_directory('staticpages', 'index.html')
-    #"<p>Sample text</p>"
-    
+
 
 # Get All
 @app.route("/students")
 def getAllStudents():
+    if not g.user:
+        return redirect(url_for('login'))
+
     return jsonify(studentDAO.getAll())
 
 # Get All
 @app.route("/teachers")
 def getAllTeachers():
+    if not g.user:
+        return redirect(url_for('login'))
+
     return jsonify(teacherDAO.getAll())
 
 # Find by ID
 @app.route("/students/<int:student_id>")
 def findByIdStudent(student_id):
+    if not g.user:
+        return redirect(url_for('login'))
+
     foundStudent = studentDAO.findByID(student_id)
 
     return jsonify(foundStudent)
@@ -39,6 +113,9 @@ def findByIdStudent(student_id):
 # Find by ID
 @app.route("/teachers/<int:teacher_id>")
 def findByIdTeacher(teacher_id):
+    if not g.user:
+        return redirect(url_for('login'))
+
     foundTeacher = teacherDAO.findByID(teacher_id)
 
     return jsonify(foundTeacher)
@@ -48,7 +125,7 @@ def findByIdTeacher(teacher_id):
 def createStudent():
     if not request.json:
         abort(400)
-    
+
     student = {
         "surname": request.json["surname"],
         "first_name": request.json["first_name"],
@@ -62,7 +139,7 @@ def createStudent():
 def createTeacher():
     if not request.json:
         abort(400)
-    
+
     teacher = {
         "surname": request.json["surname"],
         "first_name": request.json["first_name"],
@@ -106,10 +183,6 @@ def updateTeacher(teacher_id):
 # Delete
 @app.route('/students/<int:student_id>', methods=['DELETE'])
 def deleteStudent(student_id):
-    # # Delete commands no check
-    # studentDAO.delete(student_id)
-    # return jsonify({"done": True})
-
     check_id = studentDAO.check_student(student_id)
     print(check_id)
 
@@ -123,10 +196,6 @@ def deleteStudent(student_id):
 # Delete
 @app.route('/teachers/<int:teacher_id>', methods=['DELETE'])
 def deleteTeacher(teacher_id):
-    # # Delete commands no check
-    # teacherDAO.delete(teacher_id)
-    # return jsonify({"done": True})
-
     check_id = teacherDAO.check_teacher(teacher_id)
     print(check_id)
 
@@ -136,6 +205,7 @@ def deleteTeacher(teacher_id):
     else:
         error_check = "Delete failed, as no entry with the provided ID found"
         return jsonify(error_check)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
