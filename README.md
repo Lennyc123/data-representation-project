@@ -11,17 +11,20 @@ Within this python file the routing for the webpages was established [1]. A seri
 ### A Database with two accompanying tables
 A database (DB) was created using MySQL [2]. The DB is titled datarep, and the two tables are student_info & teacher_info.
 
+### Authorization (logging in)
+A login screen was established using Flask sessions(*see login.html & profile.html, within the template folder*) [5]
+![Login Screen](https://github.com/Lennyc123/data-representation-project/blob/main/images/login%20screen.jpg)
+
 ### Web Interface
 A user interface was established using HTML and AJAX calls to perform CRUD operations on the database tables (*See index.html, within the staticpages folder*) [3]. The user interface was styled using Bulma [4]. Bulma was imported using a CDN (Content Delivery Network).
 
 `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">`
+![Home Screen](https://github.com/Lennyc123/data-representation-project/blob/main/images/homescreen.jpg)
+![Crud Operations](https://github.com/Lennyc123/data-representation-project/blob/main/images/CRUD%20database%20table%20student.jpg)
 
-### Authorization (logging in)
-A login screen was established using Flask sessions(*see login.html & profile.html, within the template folder*) [5]
 
 ### Online Hosting
 The contents of this web application project were hosted online using pythonanywhere [6]. http://lennyc123.pythonanywhere.com/login
-
 
 
 # References
